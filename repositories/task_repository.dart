@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'exceptions.dart';
-import 'model.dart';
-import 'repository.dart';
+import '../utils/exceptions.dart';
+import '../models/task_model.dart';
+import 'default_repository.dart';
 
 class TaskRepository implements Repository<Task> {
   String jsonFileName = "tasks.json";

@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
-import '../model.dart';
-import '../task_repository.dart';
-import '../exceptions.dart';
+import '../models/task_model.dart';
+import '../repositories/task_repository.dart';
+import '../utils/exceptions.dart';
 
 void main() {
   group('TaskRepository - addTask', () {

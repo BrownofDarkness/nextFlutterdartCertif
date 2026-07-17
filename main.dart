@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'model.dart';
-import 'task_repository.dart';
+import 'models/task_model.dart';
+import 'repositories/task_repository.dart';
 
 void main() {
   TaskRepository taskRepository = TaskRepository();

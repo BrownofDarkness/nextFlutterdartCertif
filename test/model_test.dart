@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import '../model.dart';
+import '../models/task_model.dart';
 
 void main() {
   group('Task creation', () {

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'exceptions.dart';
+import '../utils/exceptions.dart';
 
 abstract class Task {
   final String id;
