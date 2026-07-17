@@ -64,18 +64,13 @@ class TaskRepository implements Repository<Task> {
   @override
   void saveElt(Map<String, dynamic> elmt) {
     try {
-      Task? task;
-      if (elmt["priority"] == 'high') {
-        task = UrgentTask(title: elmt["title"], dueDate: elmt["dueDate"]);
-      } else if (elmt["priority"] == 'medium') {
-        task = MediumTask(title: elmt["title"], dueDate: elmt["dueDate"]);
-      } else if (elmt["priority"] == 'low') {
-        task = LowTask(title: elmt["title"], dueDate: elmt["dueDate"]);
-      }
-
-      if (task == null) {
-        throw InvalidPriorityException("Invalid priority: ${elmt["priority"]}");
-      }
+      final task = Task.fromJson({
+        'title': elmt['title'],
+        'priority': elmt['priority'],
+        'dueDate': (elmt['dueDate'] as DateTime?)?.toIso8601String(),
+        'id': null,
+        'isCompleted': false,
+      });
       addTask(task);
       writeTasksToFile(jsonFileName);
     } on InvalidPriorityException catch (e) {
@@ -113,7 +108,7 @@ class TaskRepository implements Repository<Task> {
       }
       for (var task in _tasks) {
         print(
-          "=>+ ID: ${task.id}, Title: ${task.title}, Priority: ${task.priority}, Due Date: ${task.dueDate?.toIso8601String()}",
+          "=>+ ID: ${task.id}, Title: ${task.title}, Priority: ${task.priority}, Due Date: ${task.dueDate?.toIso8601String()}, Completed: ${task.isCompleted}",
         );
       }
     }
@@ -136,6 +131,20 @@ class TaskRepository implements Repository<Task> {
       removeTask(id);
       writeTasksToFile(jsonFileName);
       print("Task removed successfully.");
+    } on TaskNotFoundException catch (e) {
+      print(e.message);
+    }
+  }
+
+  void completeTask(String id) {
+    try {
+      final index = _tasks.indexWhere((task) => task.id == id);
+      if (index == -1) {
+        throw TaskNotFoundException("Task with id $id not found.");
+      }
+      _tasks[index].isCompleted = true;
+      writeTasksToFile(jsonFileName);
+      print("Task marked as completed successfully.");
     } on TaskNotFoundException catch (e) {
       print(e.message);
     }

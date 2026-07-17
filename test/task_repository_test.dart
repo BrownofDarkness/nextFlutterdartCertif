@@ -47,7 +47,7 @@ void main() {
       final task = LowTask(title: 'Ancien titre', dueDate: null);
       repo.addTask(task);
 
-      final updatedTask = task.copyWith('Nouveau titre', null);
+      final updatedTask = task.copyWith('Nouveau titre', null, null);
       repo.updateTask(task.id, updatedTask);
 
       final result = repo.tasks.firstWhere((t) => t.id == task.id);
@@ -65,6 +65,35 @@ void main() {
       repo.listElts(sortby: 'priority');
 
       expect(repo.tasks.first.priority, equals('high'));
+    });
+  });
+
+  group('TaskRepository - remove test', () {
+    test('deleteElt removes task and does not throw for valid id', () {
+      final repo = TaskRepository();
+      final task = LowTask(title: 'À supprimer', dueDate: null);
+      repo.addTask(task);
+
+      expect(() => repo.deleteElt(task.id), returnsNormally);
+      expect(repo.tasks.any((t) => t.id == task.id), isFalse);
+    });
+  });
+
+  group('TaskRepository - completeTask', () {
+    test('completeTask marks a task as completed', () {
+      final repo = TaskRepository();
+      final task = LowTask(title: 'À terminer', dueDate: null);
+      repo.addTask(task);
+
+      repo.completeTask(task.id);
+
+      final result = repo.tasks.firstWhere((t) => t.id == task.id);
+      expect(result.isCompleted, isTrue);
+    });
+
+    test('completeTask does not throw for non-existent id, just logs', () {
+      final repo = TaskRepository();
+      expect(() => repo.completeTask('id-inexistant'), returnsNormally);
     });
   });
 }

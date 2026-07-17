@@ -7,11 +7,17 @@ abstract class Task {
   String title;
   String priority;
   DateTime? dueDate;
+  bool isCompleted;
 
-  Task({required this.title, required this.priority, this.dueDate, String? id})
-    : id =
-          id ??
-          '${DateTime.now().microsecondsSinceEpoch}-${Random().nextInt(999999)}';
+  Task({
+    required this.title,
+    required this.priority,
+    this.dueDate,
+    String? id,
+    this.isCompleted = false,
+  }) : id =
+           id ??
+           '${DateTime.now().microsecondsSinceEpoch}-${Random().nextInt(999999)}';
 
   Map<String, dynamic> toJson() {
     return {
@@ -19,12 +25,14 @@ abstract class Task {
       'title': title,
       'priority': priority,
       'dueDate': dueDate?.toIso8601String(),
+      'isCompleted': isCompleted,
     };
   }
 
   factory Task.fromJson(Map<String, dynamic> json) {
     final priority = json['priority'];
     final title = json['title'];
+    final isCompleted = json['isCompleted'] ?? false;
     final dueDate = json['dueDate'] != null
         ? DateTime.parse(json['dueDate'])
         : null;
@@ -32,11 +40,26 @@ abstract class Task {
 
     switch (priority) {
       case 'high':
-        return UrgentTask(id: id, title: title, dueDate: dueDate);
+        return UrgentTask(
+          id: id,
+          title: title,
+          dueDate: dueDate,
+          isCompleted: isCompleted,
+        );
       case 'low':
-        return LowTask(id: id, title: title, dueDate: dueDate);
+        return LowTask(
+          id: id,
+          title: title,
+          dueDate: dueDate,
+          isCompleted: isCompleted,
+        );
       case 'medium':
-        return MediumTask(id: id, title: title, dueDate: dueDate);
+        return MediumTask(
+          id: id,
+          title: title,
+          dueDate: dueDate,
+          isCompleted: isCompleted,
+        );
       default:
         throw InvalidPriorityException("Invalid priority: $priority");
     }
@@ -44,14 +67,15 @@ abstract class Task {
 }
 
 class UrgentTask extends Task {
-  UrgentTask({required super.title, super.dueDate, super.id})
+  UrgentTask({required super.title, super.dueDate, super.id, super.isCompleted})
     : super(priority: "high");
 
-  UrgentTask copyWith(String? title, DateTime? dueDate) {
+  UrgentTask copyWith(String? title, DateTime? dueDate, bool? isCompleted) {
     return UrgentTask(
       id: id,
       title: title ?? this.title,
       dueDate: dueDate ?? this.dueDate,
+      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 
@@ -65,14 +89,15 @@ class UrgentTask extends Task {
 }
 
 class LowTask extends Task {
-  LowTask({required super.title, super.dueDate, super.id})
+  LowTask({required super.title, super.dueDate, super.id, super.isCompleted})
     : super(priority: "low");
 
-  LowTask copyWith(String? title, DateTime? dueDate) {
+  LowTask copyWith(String? title, DateTime? dueDate, bool? isCompleted) {
     return LowTask(
       id: id,
       title: title ?? this.title,
       dueDate: dueDate ?? this.dueDate,
+      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 
@@ -83,14 +108,15 @@ class LowTask extends Task {
 }
 
 class MediumTask extends Task {
-  MediumTask({required super.title, super.dueDate, super.id})
+  MediumTask({required super.title, super.dueDate, super.id, super.isCompleted})
     : super(priority: "medium");
 
-  MediumTask copyWith(String? title, DateTime? dueDate) {
+  MediumTask copyWith(String? title, DateTime? dueDate, bool? isCompleted) {
     return MediumTask(
       id: id,
       title: title ?? this.title,
       dueDate: dueDate ?? this.dueDate,
+      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 

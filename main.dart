@@ -15,6 +15,7 @@ void main() {
     print("4. List Tasks");
     print("5. sort Tasks by Priority");
     print("6. sort Tasks by Due Date");
+    print("7. Complete Task");
     print("0. Exit");
     stdout.write("Choose an option: ");
     String? choice = stdin.readLineSync();
@@ -55,7 +56,7 @@ void main() {
         print("Current tasks:");
         for (var task in taskRepository.tasks) {
           print(
-            "=> ID: ${task.id}, Title: ${task.title}, Priority: ${task.priority}, Due Date: ${task.dueDate?.toIso8601String()}",
+            "=> ID: ${task.id}, Title: ${task.title}, Priority: ${task.priority}, Due Date: ${task.dueDate?.toIso8601String()}, Completed: ${task.isCompleted}",
           );
         }
         print("choose the ID of the task to remove:");
@@ -74,7 +75,7 @@ void main() {
         print("Current tasks:");
         for (var task in taskRepository.tasks) {
           print(
-            "=> ID: ${task.id}, Title: ${task.title}, Priority: ${task.priority}, Due Date: ${task.dueDate?.toIso8601String()}",
+            "=> ID: ${task.id}, Title: ${task.title}, Priority: ${task.priority}, Due Date: ${task.dueDate?.toIso8601String()}, Completed: ${task.isCompleted}",
           );
         }
         print("Enter the ID of the task to update: ");
@@ -139,6 +140,25 @@ void main() {
         }
         print("Listing tasks by due date...");
         taskRepository.listElts(sortby: "dueDate");
+        break;
+      case '7':
+        if (taskRepository.tasks.isEmpty) {
+          print("No tasks available to complete.");
+          break;
+        }
+        print("Current tasks:");
+        for (var task in taskRepository.tasks) {
+          print(
+            "=> ID: ${task.id}, Title: ${task.title}, Priority: ${task.priority}, Due Date: ${task.dueDate?.toIso8601String()}, Completed: ${task.isCompleted}",
+          );
+        }
+        print("Enter the ID of the task to mark as completed: ");
+        String? id = stdin.readLineSync();
+        if (id == null || id.isEmpty) {
+          print("Task ID is required.");
+          break;
+        }
+        taskRepository.completeTask(id);
         break;
       case '0':
         exit(0);
