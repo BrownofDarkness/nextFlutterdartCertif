@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'exceptions.dart';
+
 abstract class Task {
   final String id;
   String title;
@@ -34,19 +36,20 @@ abstract class Task {
       case 'low':
         return LowTask(id: id, title: title, dueDate: dueDate);
       case 'medium':
-      default:
         return MediumTask(id: id, title: title, dueDate: dueDate);
+      default:
+        throw InvalidPriorityException("Invalid priority: $priority");
     }
   }
 }
 
 class UrgentTask extends Task {
-  UrgentTask({required String title, DateTime? dueDate, String? id})
-    : super(title: title, priority: "high", dueDate: dueDate, id: id);
+  UrgentTask({required super.title, super.dueDate, super.id})
+    : super(priority: "high");
 
   UrgentTask copyWith(String? title, DateTime? dueDate) {
     return UrgentTask(
-      id: this.id,
+      id: id,
       title: title ?? this.title,
       dueDate: dueDate ?? this.dueDate,
     );
@@ -62,12 +65,12 @@ class UrgentTask extends Task {
 }
 
 class LowTask extends Task {
-  LowTask({required String title, DateTime? dueDate, String? id})
-    : super(title: title, priority: "low", dueDate: dueDate, id: id);
+  LowTask({required super.title, super.dueDate, super.id})
+    : super(priority: "low");
 
   LowTask copyWith(String? title, DateTime? dueDate) {
     return LowTask(
-      id: this.id,
+      id: id,
       title: title ?? this.title,
       dueDate: dueDate ?? this.dueDate,
     );
@@ -80,12 +83,12 @@ class LowTask extends Task {
 }
 
 class MediumTask extends Task {
-  MediumTask({required String title, DateTime? dueDate, String? id})
-    : super(title: title, priority: "medium", dueDate: dueDate, id: id);
+  MediumTask({required super.title, super.dueDate, super.id})
+    : super(priority: "medium");
 
   MediumTask copyWith(String? title, DateTime? dueDate) {
     return MediumTask(
-      id: this.id,
+      id: id,
       title: title ?? this.title,
       dueDate: dueDate ?? this.dueDate,
     );

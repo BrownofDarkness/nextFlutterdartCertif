@@ -64,12 +64,7 @@ class TaskRepository implements Repository<Task> {
   @override
   void saveElt(Map<String, dynamic> elmt) {
     try {
-      if (elmt["priority"] != 'high' &&
-          elmt["priority"] != 'medium' &&
-          elmt["priority"] != 'low') {
-        throw InvalidPriorityException("Task data is required.");
-      }
-      var task;
+      Task? task;
       if (elmt["priority"] == 'high') {
         task = UrgentTask(title: elmt["title"], dueDate: elmt["dueDate"]);
       } else if (elmt["priority"] == 'medium') {
@@ -77,7 +72,11 @@ class TaskRepository implements Repository<Task> {
       } else if (elmt["priority"] == 'low') {
         task = LowTask(title: elmt["title"], dueDate: elmt["dueDate"]);
       }
-      addTask(task as Task);
+
+      if (task == null) {
+        throw InvalidPriorityException("Invalid priority: ${elmt["priority"]}");
+      }
+      addTask(task);
       writeTasksToFile(jsonFileName);
     } on InvalidPriorityException catch (e) {
       print(e.message);

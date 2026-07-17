@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'model.dart';
-import 'taskRepository.dart';
+import 'task_repository.dart';
 
 void main() {
   TaskRepository taskRepository = TaskRepository();
@@ -88,7 +88,6 @@ void main() {
         print("2. Due Date");
         String? updateChoice = stdin.readLineSync();
         String? newTitle;
-        DateTime? newDueDate;
 
         switch (updateChoice) {
           case '1':

@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 import '../model.dart';
-import '../taskRepository.dart';
+import '../task_repository.dart';
 import '../exceptions.dart';
 
 void main() {
